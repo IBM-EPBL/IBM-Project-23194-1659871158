@@ -1,0 +1,48 @@
+/* This code helps the user to find out the Room temperature 
+and alert them, if the room temperature exceeds 25*C with 
+a buzzer sound along wiht RED LED and turn the motor(fan)ON. If the room temperature is 
+normal it notify with GREEN LED and motor(fan) is OFF */ 
+int led1=13;
+int led2=12;
+int buzz=11;
+int temp=A0;
+int motor=7;
+void setup()
+{
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(motor,OUTPUT);
+  pinMode(temp, INPUT);
+  pinMode(buzz,OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  int value=15;//analogRead(temp);
+  float volt=(value/1024.0)*5000;   //converts input temp to voltage
+  float cel=volt/10;                // voltage to Celcius         
+  Serial.print("Temperature in C = ");
+  Serial.print(cel);
+  Serial.print(" *C");
+  Serial.println();
+  if(cel>=25)
+  {
+  	digitalWrite(led1, HIGH);
+    tone(buzz,1000);
+    digitalWrite(motor, HIGH);
+  	delay(1000); // Wait for 1000 millisecond(s)
+    digitalWrite(led1, LOW);
+    noTone(buzz);
+    delay(1000);
+   }
+  else
+  {
+  	digitalWrite(led2, HIGH);
+    digitalWrite(motor,LOW);
+  	delay(1000); // Wait for 1000 millisecond(s)
+    digitalWrite(led2, LOW);
+    delay(1000);
+  }
+}
+  
